@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: uaa
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+server:
+  port: 8083
+  tomcat:
+    remote-ip-header: x-real-ip
+    accesslog:
+      directory: /data/logs/ # Directory in which log files are created. Can be relative to the tomcat base dir or absolute.
+      enabled: true # Enable access log.
+
+
+      # remoteIp  remoteUser time request requestSpentTime BytesSent responseStatusCode responseSpentTime
+      # Format pattern for access logs.
+      #https://tomcat.apache.org/tomcat-7.0-doc/config/valve.html#Access_Log_Valve
+      pattern: "%a %u %{yyyy-MM-dd'T'HH:mm:ss.SSSZ}t %r %D %B %s %F %{begin:msec}t %{end:msec}t"
+      prefix: access_log_${spring.application.name} # Log file name prefix.
+      rename-on-rotate: false # Defer inclusion of the date stamp in the file name until rotate time.
+      suffix: .log # Log file name
+      retain-days: 3 # 自定义的值，保留时间
+      clean-logs-cron: "30 1 * * *" # linux cron表达式，什么时间执行清理动作
+logging:
+  pattern: #配置日志格式 %d：日期 , %msg：日志信息 ，%n换行
+    console: "%d - %msg%n" #设置控制台打印格式
+  path: /data/logs #设置log文件路径 默认名称：spring.log
+  file: /data/logs/uaa.log #设置log文件路径 设置日志文件名称cell.log
+  level:
+    com.springboot.service.LoggerTest: error #指定输出某个类的日志级别
